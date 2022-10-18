@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .sending{
+            background:rgb(184, 255, 181);
+            text-align: right;
+            padding:10px;
+            border-radius:10px;
+        }
+        .receiving{
+            background:rgb(155, 233, 255);
+            text-align: left;
+            padding:10px;
+            border-radius:10px;
+        }
+
+        .messagebox{
+            padding:10px;
+            width:450px;
+        }
+        .sendbutton{
+            padding:10px;
+        }
+        .chatwindow{
+            width:500px;
+        }
+        .chatform{
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="chatwindow">
+        <h1>index2</h1>
+        <div id="chats">
+            <!-- <p class="sending">Some Message</p>
+            <p class="receiving">Some reply</p> -->
+        </div>
+        <form id="chat_form" class="chatform">
+            <input type="text" id="message_box" class="messagebox" placeholder="Message" required/>
+            <button type="submit" class="sendbutton">></button>
+        </form>
+    </div>
+    <script src="https://cdn.socket.io/4.5.3/socket.io.js"></script>
+    <script>
+        let socket = io();
+        let chatForm = document.getElementById("chat_form")
+        let chats = document.getElementById("chats")
+        chatForm.onsubmit = (e)=>{
+            e.preventDefault()
+            let messagebox = document.getElementById("message_box")
+            let message = messagebox.value
+            socket.emit("index2 message",message)
+            let sending = document.createElement("p")
+            sending.className="sending"
+            sending.textContent=message;
+            console.log(sending)
+            chats.appendChild(sending)
+            messagebox.value=""
+        }
+        socket.on("index message", (msg)=>{
+            console.log(msg)
+            let receiving = document.createElement("p")
+            receiving.className="receiving"
+            receiving.textContent=msg
+            chats.appendChild(receiving)
+        })
+        console.log(socket)
+    </script>
+</body>
+</html>
